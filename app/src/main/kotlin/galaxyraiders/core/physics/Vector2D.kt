@@ -1,4 +1,3 @@
-
 package galaxyraiders.core.physics
 
 import kotlin.math.*
@@ -14,16 +13,16 @@ data class Vector2D(val dx: Double, val dy: Double) {
     get() = sqrt(this.dx * this.dx + this.dy * this.dy)
 
   val radiant: Double
-    get() = acos(this.dx / this.magnitude)
+    get() = if (this.dy > 0) acos(this.dx / this.magnitude) else -acos(this.dx / this.magnitude)
 
   val degree: Double
-    get() = atan2(this.dy, this.dx)
+    get() = this.radiant * 180 / PI
 
   val unit: Vector2D
     get() = Vector2D(this.dx / this.magnitude, this.dy / this.magnitude)
 
   val normal: Vector2D
-    get() = Vector2D(-this.dy, this.dx)
+    get() = Vector2D(this.dy / this.magnitude, -this.dx / this.magnitude)
 
   operator fun times(scalar: Double): Vector2D {
     return Vector2D(this.dx * scalar, this.dy * scalar)
@@ -54,14 +53,14 @@ data class Vector2D(val dx: Double, val dy: Double) {
   }
 
   fun scalarProject(target: Vector2D): Double {
-    return INVALID_DOUBLE
+    return this * target / target.magnitude
   }
 
   fun vectorProject(target: Vector2D): Vector2D {
-    return INVALID_VECTOR
+    return this.scalarProject(target) * target.unit
   }
 }
 
 operator fun Double.times(v: Vector2D): Vector2D {
-  return INVALID_VECTOR
+  return v.times(this)
 }

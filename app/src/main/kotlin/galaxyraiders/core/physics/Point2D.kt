@@ -4,11 +4,11 @@ import kotlin.math.*
 
 data class Point2D(val x: Double, val y: Double) {
   operator fun plus(p: Point2D): Point2D {
-    return Point2D(this.x + p.x, this.y + p.y);
+    return Point2D(this.x + p.x, this.y + p.y)
   }
 
   operator fun plus(v: Vector2D): Point2D {
-    return Point2D(this.x + v.dx, this.y + v.dy);
+    return Point2D(this.x + v.dx, this.y + v.dy)
   }
 
   override fun toString(): String {
@@ -16,13 +16,11 @@ data class Point2D(val x: Double, val y: Double) {
   }
 
   fun toVector(): Vector2D {
-    return Vector2D(this.x, this.y);
+    return Vector2D(this.x, this.y)
   }
 
   fun impactVector(p: Point2D): Vector2D {
-    val x = this.x - p.x
-    val y = this.y - p.y
-    return Vector2D(x, y)
+    return Vector2D(p.x - this.x, p.y - this.y)
   }
 
   fun impactDirection(p: Point2D): Vector2D {
@@ -41,6 +39,6 @@ data class Point2D(val x: Double, val y: Double) {
   }
 
   fun distance(p: Point2D): Double {
-    return (p.x.pow(2) + p.y.pow(2)).pow(0.5)
+    return ((this.x - p.x).pow(2) + (this.y - p.y).pow(2)).pow(0.5)
   }
 }
