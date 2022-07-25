@@ -11,6 +11,7 @@ import org.junit.jupiter.api.assertAll
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 @DisplayName("Given a game engine")
 class GameEngineTest {
@@ -134,6 +135,65 @@ class GameEngineTest {
     normalGame.moveSpaceObjects()
 
     assertEquals(expectedShipPosition, normalGame.field.ship.center)
+
+    hardGame.field.generateAsteroid()
+    hardGame.field.generateMissile()
+
+    val ship = hardGame.field.ship
+    repeat(2) { ship.boostRight() }
+    val expectedShipPosition = ship.center + ship.velocity
+
+    val asteroid = hardGame.field.asteroids[0]
+    val expectedAsteroidPosition = asteroid.center + asteroid.velocity
+
+    val missile = hardGame.field.missiles[0]
+    val expectedMissilePosition = missile.center + missile.velocity
+
+    hardGame.moveSpaceObjects()
+
+    assertAll(
+      "GameEngine should move all space objects",
+      { assertEquals(expectedShipPosition, ship.center) },
+      { assertEquals(expectedAsteroidPosition, asteroid.center) },
+      { assertEquals(expectedMissilePosition, missile.center) },
+    )
+  }
+
+  @Test
+  fun `it can trim its space objects`() {
+    hardGame.field.generateAsteroid()
+    hardGame.field.generateMissile()
+
+    val missile = hardGame.field.missiles.last()
+    val missileDistanceToTopBorder =
+      hardGame.field.boundaryY.endInclusive - missile.center.y
+    val repetitionsToGetMissileOutOfSpaceField = Math.ceil(
+      missileDistanceToTopBorder / Math.abs(missile.velocity.dy)
+    ).toInt()
+
+    val asteroid = hardGame.field.asteroids.last()
+    val asteroidDistanceToBottomBorder =
+      asteroid.center.y - hardGame.field.boundaryY.start
+    val repetitionsToGetAsteroidOutsideOfSpaceField = Math.ceil(
+      asteroidDistanceToBottomBorder / Math.abs(asteroid.velocity.dy)
+    ).toInt()
+
+    val repetitionsToGetSpaceObjectsOutOfSpaceField = Math.max(
+      repetitionsToGetMissileOutOfSpaceField,
+      repetitionsToGetAsteroidOutsideOfSpaceField,
+    )
+
+    repeat(repetitionsToGetSpaceObjectsOutOfSpaceField) {
+      hardGame.moveSpaceObjects()
+    }
+
+    hardGame.trimSpaceObjects()
+
+    assertAll(
+      "GameEngine should trim all space objects",
+      { assertEquals(-1, hardGame.field.missiles.indexOf(missile)) },
+      { assertEquals(-1, hardGame.field.asteroids.indexOf(asteroid)) },
+    )
   }
 
   @Test
@@ -186,6 +246,8 @@ class GameEngineTest {
       { assertEquals(0, controllerSpy.playerCommands.size) },
       { assertEquals(expectedNumAsteroids, hardGame.field.asteroids.size) },
       { assertEquals(expectedNumRenders, visualizerSpy.numRenders) },
+      { assertEquals(expectedNumRenders, visualizerSpy.numRenders) },
+      { assertTrue(hardGame.field.asteroids.size <= numPlayerCommands - 1) },
     )
   }
 }
