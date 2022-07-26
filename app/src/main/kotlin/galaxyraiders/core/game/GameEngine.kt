@@ -1,6 +1,7 @@
 package galaxyraiders.core.game
 
 import galaxyraiders.Config
+import galaxyraiders.core.physics.Vector2D
 import galaxyraiders.ports.RandomGenerator
 import galaxyraiders.ports.ui.Controller
 import galaxyraiders.ports.ui.Controller.PlayerCommand
@@ -80,15 +81,23 @@ class GameEngine(
 
   fun updateSpaceObjects() {
     if (!this.playing) return
+    this.updateExplosions()
     this.handleCollisions()
     this.moveSpaceObjects()
     this.generateAsteroids()
+  }
+
+  private fun updateExplosions(){
+    this.field.updateExplosions()
   }
 
   fun handleCollisions() {
     this.field.spaceObjects.forEachPair {
         (first, second) ->
       if (first.impacts(second)) {
+        if (first.type == "Missile" && second.type == "Asteroid"){
+          this.field.generateExplosion(first);
+        }
         first.collideWith(second, GameEngineConfig.coefficientRestitution)
       }
     }

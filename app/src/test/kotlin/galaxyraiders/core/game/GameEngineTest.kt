@@ -139,9 +139,9 @@ class GameEngineTest {
     hardGame.field.generateAsteroid()
     hardGame.field.generateMissile()
 
-    val ship = hardGame.field.ship
-    repeat(2) { ship.boostRight() }
-    val expectedShipPosition = ship.center + ship.velocity
+    val hardship = hardGame.field.ship
+    repeat(2) { hardship.boostRight() }
+    val expectedHardShipPosition = hardship.center + hardship.velocity
 
     val asteroid = hardGame.field.asteroids[0]
     val expectedAsteroidPosition = asteroid.center + asteroid.velocity
@@ -153,7 +153,7 @@ class GameEngineTest {
 
     assertAll(
       "GameEngine should move all space objects",
-      { assertEquals(expectedShipPosition, ship.center) },
+      { assertEquals(expectedHardShipPosition, ship.center) },
       { assertEquals(expectedAsteroidPosition, asteroid.center) },
       { assertEquals(expectedMissilePosition, missile.center) },
     )
