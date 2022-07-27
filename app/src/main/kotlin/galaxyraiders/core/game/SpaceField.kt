@@ -47,7 +47,7 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
   }
 
   private fun createExplosion(first: SpaceObject): Explosion{
-    return Explosion(first.center, Vector2D(0.1, 0.1), lifetime = 10, radius = 100.0, mass = 10.0)
+    return Explosion(first.center, Vector2D(0.0, 0.0), lifetime = 10, radius = 100.0, mass = 0.0)
   }
 
   fun updateExplosions(){
@@ -67,7 +67,7 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
   }
 
   val spaceObjects: List<SpaceObject>
-    get() = listOf(this.ship) + this.missiles + this.asteroids + this.explosions //isso eh escroto
+    get() = listOf(this.ship) + this.missiles + this.asteroids  //isso eh escroto
 
   fun moveShip() {
     this.ship.move(boundaryX, boundaryY)
