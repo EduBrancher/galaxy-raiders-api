@@ -67,7 +67,7 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
   }
 
   val spaceObjects: List<SpaceObject>
-    get() = listOf(this.ship) + this.missiles + this.asteroids //isso eh escroto
+    get() = listOf(this.ship) + this.missiles + this.asteroids + this.explosions //isso eh escroto
 
   fun moveShip() {
     this.ship.move(boundaryX, boundaryY)
