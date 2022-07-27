@@ -1,7 +1,7 @@
 
 package galaxyraiders.core.physics
 
-import kotlin.math.*
+import kotlin.math.sqrt
 
 data class Point2D(val x: Double, val y: Double) {
   operator fun plus(p: Point2D): Point2D {
@@ -40,6 +40,8 @@ data class Point2D(val x: Double, val y: Double) {
   }
 
   fun distance(p: Point2D): Double {
-    return ((this.x - p.x).pow(2) + (this.y - p.y).pow(2)).pow(0.5)
+    val dx = this.x - p.x
+    val dy = this.y - p.y
+    return sqrt(dx * dx + dy * dy)
   }
 }

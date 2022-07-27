@@ -42,23 +42,23 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
   var explosions: List<Explosion> = emptyList()
     private set
 
-  fun generateExplosion(first: SpaceObject){
+  fun generateExplosion(first: SpaceObject) {
     explosions += createExplosion(first)
   }
 
-  private fun createExplosion(first: SpaceObject): Explosion{
+  private fun createExplosion(first: SpaceObject): Explosion {
     return Explosion(first.center, Vector2D(0.0, 0.0), lifetime = 5, radius = 3.0, mass = 0.0)
   }
 
-  fun updateExplosions(){
-    this.explosions.forEach(){
+  fun updateExplosions() {
+    this.explosions.forEach() {
       it.tick()
     }
     trimExplosions()
   }
 
-  fun trimExplosions(){
-    this.explosions = this.explosions.filter{
+  fun trimExplosions() {
+    this.explosions = this.explosions.filter {
       it.lifetime > 0
     }
   }
@@ -68,7 +68,7 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
   }
 
   val spaceObjects: List<SpaceObject>
-    get() = listOf(this.ship) + this.missiles + this.asteroids //isso eh escroto
+    get() = listOf(this.ship) + this.missiles + this.asteroids // isso eh escroto
 
   fun moveShip() {
     this.ship.move(boundaryX, boundaryY)
@@ -127,7 +127,8 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
   private fun defineMissilePosition(missileRadius: Double): Point2D {
     return ship.center + Vector2D(
       dx = 0.0,
-      dy = ship.radius + missileRadius + SpaceFieldConfig.missileDistanceFromShip)
+      dy = ship.radius + missileRadius + SpaceFieldConfig.missileDistanceFromShip
+    )
   }
 
   private fun defineMissileVelocity(): Vector2D {

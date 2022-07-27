@@ -1,9 +1,10 @@
 
 package galaxyraiders.core.physics
 
-import kotlin.math.*
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import kotlin.math.sqrt
+import kotlin.math.acos
+import kotlin.math.PI
 
 @JsonIgnoreProperties("unit", "normal", "degree", "magnitude")
 data class Vector2D(val dx: Double, val dy: Double) {
@@ -18,7 +19,7 @@ data class Vector2D(val dx: Double, val dy: Double) {
     get() = if (this.dy > 0) acos(this.dx / this.magnitude) else -acos(this.dx / this.magnitude)
 
   val degree: Double
-    get() = this.radiant * 180 / PI
+    get() = this.radiant * CENTO_EM_OITENTA / PI
 
   val unit: Vector2D
     get() = Vector2D(this.dx / this.magnitude, this.dy / this.magnitude)
@@ -60,6 +61,10 @@ data class Vector2D(val dx: Double, val dy: Double) {
 
   fun vectorProject(target: Vector2D): Vector2D {
     return this.scalarProject(target) * target.unit
+  }
+
+  companion object {
+    private const val CENTO_EM_OITENTA = 180
   }
 }
 

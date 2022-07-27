@@ -1,7 +1,6 @@
 package galaxyraiders.core.game
 
 import galaxyraiders.Config
-import galaxyraiders.core.physics.Vector2D
 import galaxyraiders.ports.RandomGenerator
 import galaxyraiders.ports.ui.Controller
 import galaxyraiders.ports.ui.Controller.PlayerCommand
@@ -21,7 +20,6 @@ object GameEngineConfig {
 
   val msPerFrame: Int = MILLISECONDS_PER_SECOND / this.frameRate
 }
-
 
 @Suppress("TooManyFunctions")
 class GameEngine(
@@ -59,7 +57,6 @@ class GameEngine(
     this.renderSpaceField()
   }
 
-
   fun processPlayerInput() {
     this.controller.nextPlayerCommand()?.also {
       when (it) {
@@ -87,7 +84,7 @@ class GameEngine(
     this.generateAsteroids()
   }
 
-  private fun updateExplosions(){
+  private fun updateExplosions() {
     this.field.updateExplosions()
   }
 
@@ -95,8 +92,8 @@ class GameEngine(
     this.field.spaceObjects.forEachPair {
         (first, second) ->
       if (first.impacts(second)) {
-        if (first.type == "Missile" && second.type == "Asteroid"){
-          this.field.generateExplosion(first);
+        if (first.type == "Missile" && second.type == "Asteroid") {
+          this.field.generateExplosion(first)
         }
         first.collideWith(second, GameEngineConfig.coefficientRestitution)
       }
